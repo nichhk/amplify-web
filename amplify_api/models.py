@@ -1,7 +1,10 @@
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.datetime_safe import datetime
+
 from rest_framework.authtoken.models import Token
 from django.conf import settings
 
@@ -9,6 +12,12 @@ class Group(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100, blank=True, default='', unique=True)
     song = models.CharField(max_length=100, blank=True, default='')
+
+    master_start = models.DateTimeField(blank=True, null=True)
+    slave_start = models.DateTimeField(blank=True, null=True)
+
+
+
 
 class UserManager(BaseUserManager):
     def _create_user(self, oauth, group, is_master):
