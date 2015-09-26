@@ -1,0 +1,7 @@
+1. localhost:8000/group/create
+    name: ""
+    group: ""
+
+2. localhost:8000/set_song
+    song:""
+3. localhost:8000/get-song?group={group_name}

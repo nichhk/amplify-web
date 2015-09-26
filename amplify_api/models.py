@@ -8,7 +8,7 @@ from django.conf import settings
 class Group(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100, blank=True, default='', unique=True)
-    cur_song = models.CharField(max_length=100, blank=True, default='')
+    song = models.CharField(max_length=100, blank=True, default='')
 
 class UserManager(BaseUserManager):
     def _create_user(self, oauth, group, is_master):

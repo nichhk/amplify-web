@@ -1,3 +1,5 @@
+import json
+from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from amplify_api.models import User, Group
@@ -47,6 +49,20 @@ def create_group(request):
     user.save()
     return Response(group.id)
 
+# WIll have to add more advanced features later
+
 @api_view(['POST'])
-def play(request):
-    return None
+def set_song(request):
+    data = request.data
+    group = Group.objects.filter(id=data['group'])[0]
+    group.song = data['song']
+    group.save()
+    return Response(group.id)
+
+
+@api_view(['GET'])
+def get_song(request):
+    group=Group.objects.filter(id=request.GET['group'])[0]
+    response_data = {}
+    response_data["song"] = group.song
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
