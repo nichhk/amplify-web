@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+import amplify_api.views as views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^group/create/$', views.create_group),
+    url(r'^group/list/$', views.GroupList.as_view()),
+    url(r'^play', views.play)
 ]
