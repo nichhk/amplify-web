@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^group/create/$', views.create_group),
     url(r'^group/list/$', views.GroupList.as_view()),
-    url(r'^play', views.play)
+    url(r'^set-song', views.set_song),
+    url(r'^get-song', views.get_song)
 ]
