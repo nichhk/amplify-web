@@ -39,7 +39,7 @@ class User(AbstractBaseUser):
     oauth = models.CharField(max_length=100, blank=True, default='', primary_key=True)
     group = models.ForeignKey("Group", null=True)
     is_master = models.BooleanField(default=False)
-    gcm_token = models.CharField(max_length=100, blank=True, default='')
+    gcm_token = models.CharField(max_length=100, blank=True, default='', null=True)
 
     USERNAME_FIELD = 'oauth'
     objects = UserManager()

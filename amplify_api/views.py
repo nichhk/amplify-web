@@ -51,7 +51,8 @@ def create_group(request):
         return Response(status=status.HTTP_400_BAD_REQUEST)
     group = Group.objects.create(name=group_name)
     group.save()
-    user = User.objects.create(oauth=oauth, is_master=True)
+    print "oauth is ", oauth
+    user = User.objects.create(oauth=oauth, group=group, is_master=True)
     user.save()
     return Response(group.id)
 
