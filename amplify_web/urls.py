@@ -20,6 +20,8 @@ import amplify_api.views as views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^group/create/$', views.create_group),
+    url(r'^group/join/$', views.UserDetail.as_view()),
+    url(r'^user/list/$', views.UserList.as_view()),
     url(r'^group/list/$', views.GroupList.as_view()),
     url(r'^group/set-song', views.set_song),
     url(r'^group/get-song', views.get_song)

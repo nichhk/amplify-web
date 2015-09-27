@@ -28,6 +28,11 @@ class GroupList(generics.ListCreateAPIView):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    '''
+    def post(self, request, *args, **kwargs):
+        # make the group
+        # send msg to GCM to make a group
+    '''
 
 class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
     """

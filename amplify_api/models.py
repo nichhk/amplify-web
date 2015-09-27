@@ -18,7 +18,6 @@ class Group(models.Model):
 
 
 
-
 class UserManager(BaseUserManager):
     def _create_user(self, oauth, group, is_master):
         user = self.model(
@@ -40,6 +39,8 @@ class User(AbstractBaseUser):
     oauth = models.CharField(max_length=100, blank=True, default='', primary_key=True)
     group = models.ForeignKey("Group", null=True)
     is_master = models.BooleanField(default=False)
+    gcm_token = models.CharField(max_length=100, blank=True, default='')
+
     USERNAME_FIELD = 'oauth'
     objects = UserManager()
 
