@@ -64,7 +64,10 @@ def create_group(request):
         group = Group.objects.create(name=group_name)
         group.save()
         # TODO: get the GCM token for the user and save it
-        user = User.objects.create(oauth=oauth, group=group, is_master=True)
+        try:
+            user = User.objects.get(oauth=oauth)
+        except:
+            user = User.objects.create(oauth=oauth, group=group, is_master=True)
         user.save()
         return Response(group.id)
     except:
