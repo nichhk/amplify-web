@@ -22,17 +22,28 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    def put(self, request, *args, **kwargs):
+        data = request.data
+        user = User.objects.get(pk=data['oauth'])
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class GroupList(generics.ListCreateAPIView):
     """
     GET all the groups, or POST a group
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    '''
+
     def post(self, request, *args, **kwargs):
-        # make the group
-        # send msg to GCM to make a group
-    '''
+        serializer = GroupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
     """
@@ -52,7 +63,7 @@ def create_group(request):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         group = Group.objects.create(name=group_name)
         group.save()
-        print "oauth is ", oauth
+        # TODO: get the GCM token for the user and save it
         user = User.objects.create(oauth=oauth, group=group, is_master=True)
         user.save()
         return Response(group.id)

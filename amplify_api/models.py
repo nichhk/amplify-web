@@ -10,7 +10,7 @@ from django.conf import settings
 
 class Group(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    name = models.CharField(max_length=100, blank=True, default='', unique=True)
+    name = models.CharField(max_length=100, blank=False, default='', unique=True)
     song = models.CharField(max_length=100, blank=True, default='')
 
     master_start = models.DateTimeField(blank=True, null=True)
