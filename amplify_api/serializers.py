@@ -12,4 +12,4 @@ class UserSerializer(serializers.ModelSerializer):
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = ('id', 'name', 'song')
+        fields = ('id', 'name', 'song', 'master_start', 'slave_start')
