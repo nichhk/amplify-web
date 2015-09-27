@@ -23,18 +23,18 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
 
     def put(self, request, *args, **kwargs):
+        data = request.data
+        android_id = data['android_id']
+        group = data['group']
         try:
-            data = request.data
-            user = User.objects.get(pk=data['oauth'])
+            user = User.objects.get(pk=android_id)
             serializer = UserSerializer(user, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except:
-            print '>>> traceback <<<'
-            traceback.print_exc()
-            print '>>> end of traceback <<<'
+            user = User.objects.create(android_id=android_id, group=group)
+            user.save()
+        return Response()
 
 class GroupList(generics.ListCreateAPIView):
     """
@@ -63,16 +63,16 @@ def create_group(request):
         if request.method == 'POST':
             data = request.data
         group_name = data['name']
-        oauth = data['oauth']
-        if group_name is None or oauth is None:
+        android_id = data['android_id']
+        if group_name is None or android_id is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         group = Group.objects.create(name=group_name)
         group.save()
         # TODO: get the GCM token for the user and save it
         try:
-            user = User.objects.get(oauth=oauth)
+            user = User.objects.get(android_id=android_id)
         except:
-            user = User.objects.create(oauth=oauth, group=group, is_master=True)
+            user = User.objects.create(android_id=android_id, group=group, is_master=True)
         user.save()
         return Response(group.id)
     except:

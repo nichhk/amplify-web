@@ -19,8 +19,10 @@ class Group(models.Model):
 
 
 class UserManager(BaseUserManager):
-    def _create_user(self, oauth, group, is_master):
+    def _create_user(self, android_id, gcm_token, oauth, group, is_master):
         user = self.model(
+            android_id=android_id,
+            gcm_token=gcm_token,
             oauth=oauth,
             group=group,
             is_master=is_master,
@@ -36,7 +38,8 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     created = models.DateTimeField(auto_now_add=True)
-    oauth = models.CharField(max_length=200, blank=True, default='', primary_key=True)
+    android_id = models.CharField(max_length=100, blank=False, default='', primary_key=True)
+    # oauth = models.CharField(max_length=200, blank=True, default='')
     group = models.ForeignKey("Group", null=True)
     is_master = models.BooleanField(default=False)
     gcm_token = models.CharField(max_length=100, blank=True, default='', null=True)
