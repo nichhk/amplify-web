@@ -1,3 +1,6 @@
+import json
+from datetime import datetime, timedelta
+from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from amplify_api.models import User, Group
@@ -47,6 +50,38 @@ def create_group(request):
     user.save()
     return Response(group.id)
 
+# WIll have to add more advanced features later
+
 @api_view(['POST'])
-def play(request):
-    return None
+def set_song(request):
+    data = request.data
+    group = Group.objects.filter(id=data['group'])[0]
+    group.song = data['song']
+    # Start the slaves in 1 seconds
+    group.master_start = datetime.now()
+    group.slave_start = datetime.now() + timedelta(seconds=1.5)
+    group.save()
+    return Response(group.id)
+
+
+@api_view(['GET'])
+#TODO:
+def get_song(request):
+    group=Group.objects.filter(id=request.GET['group'])[0]
+    response_data = {}
+    response_data["song"] = group.song
+    response_data["start"] = unix_time_millis(group.slave_start)
+    response_data["master_start"]=unix_time_millis(group.master_start)
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+def unix_time(dt):
+    epoch = datetime.utcfromtimestamp(0)
+    delta = dt.replace(tzinfo=None) - epoch
+    return delta.total_seconds()
+
+def unix_time_millis(dt):
+    return unix_time(dt) * 1000.0
+
+
+
