@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from amplify_api.models import User, Group
 from amplify_api.serializers import UserSerializer, GroupSerializer
 from rest_framework import generics, status
-
+import traceback
 
 class UserList(generics.ListCreateAPIView):
     """
@@ -43,18 +43,23 @@ class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
 
 @api_view(['POST'])
 def create_group(request):
-    if request.method == 'POST':
-        data = request.data
-    group_name = data['name']
-    oauth = data['oauth']
-    if group_name is None or oauth is None:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-    group = Group.objects.create(name=group_name)
-    group.save()
-    print "oauth is ", oauth
-    user = User.objects.create(oauth=oauth, group=group, is_master=True)
-    user.save()
-    return Response(group.id)
+    try:
+        if request.method == 'POST':
+            data = request.data
+        group_name = data['name']
+        oauth = data['oauth']
+        if group_name is None or oauth is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        group = Group.objects.create(name=group_name)
+        group.save()
+        print "oauth is ", oauth
+        user = User.objects.create(oauth=oauth, group=group, is_master=True)
+        user.save()
+        return Response(group.id)
+    except:
+        print '>>> traceback <<<'
+        traceback.print_exc()
+        print '>>> end of traceback <<<'
 
 # WIll have to add more advanced features later
 
