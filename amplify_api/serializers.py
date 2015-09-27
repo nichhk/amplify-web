@@ -6,7 +6,7 @@ from models import User, Group
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('oauth', 'group', 'is_master')
+        fields = ('android_id', 'group', 'is_master')
 
 
 class GroupSerializer(serializers.ModelSerializer):
