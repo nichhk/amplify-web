@@ -60,9 +60,6 @@ target/
 .idea/
 *.iml
 
-# Ignore migrations
-**/migrations/
-
 venv/
 
 *.sqlite3
