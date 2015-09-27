@@ -66,3 +66,5 @@ target/
 venv/
 
 *.sqlite3
+
+staticfiles
