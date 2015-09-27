@@ -23,13 +23,18 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
 
     def put(self, request, *args, **kwargs):
-        data = request.data
-        user = User.objects.get(pk=data['oauth'])
-        serializer = UserSerializer(user, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            data = request.data
+            user = User.objects.get(pk=data['oauth'])
+            serializer = UserSerializer(user, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            print '>>> traceback <<<'
+            traceback.print_exc()
+            print '>>> end of traceback <<<'
 
 class GroupList(generics.ListCreateAPIView):
     """
