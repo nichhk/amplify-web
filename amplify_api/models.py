@@ -36,7 +36,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     created = models.DateTimeField(auto_now_add=True)
-    oauth = models.CharField(max_length=100, blank=True, default='', primary_key=True)
+    oauth = models.CharField(max_length=200, blank=True, default='', primary_key=True)
     group = models.ForeignKey("Group", null=True)
     is_master = models.BooleanField(default=False)
     gcm_token = models.CharField(max_length=100, blank=True, default='', null=True)
