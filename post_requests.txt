@@ -4,4 +4,5 @@
 
 2. localhost:8000/set_song
     song:""
+    group:1
 3. localhost:8000/get-song?group={group_name}&start_time={start_time}

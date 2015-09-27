@@ -52,10 +52,16 @@ def create_group(request):
 
 # WIll have to add more advanced features later
 
+
 @api_view(['POST'])
 def set_song(request):
+    '''
+    Sets the song for the group whenever the master plays a song.
+    :param request:
+    :return:
+    '''
     data = request.data
-    group = Group.objects.filter(id=data['group'])[0]
+    group = Group.objects.get(id=data['group'])
     group.song = data['song']
     # Start the slaves in 1 seconds
     group.master_start = datetime.now()
@@ -67,12 +73,25 @@ def set_song(request):
 @api_view(['GET'])
 #TODO:
 def get_song(request):
+    '''
+    The slaves constantly call this endpoint to see which song to play and when.
+    :param request:
+    :return:
+    '''
     group=Group.objects.filter(id=request.GET['group'])[0]
     response_data = {}
     response_data["song"] = group.song
     response_data["start"] = unix_time_millis(group.slave_start)
     response_data["master_start"]=unix_time_millis(group.master_start)
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+@api_view(['GET'])
+def stop_song(request):
+    '''
+    Master calls this endpoint when he pauses the song.
+    :param request:
+    :return:
+    '''
 
 
 def unix_time(dt):
